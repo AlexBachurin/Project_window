@@ -1,11 +1,11 @@
-const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, activeClass) => {
+const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, activeClass, display = 'block') => {
     const tabContent = document.querySelectorAll(tabContentSelector),
         tabLinksWrapper = document.querySelector(tabLinksWrapperSelector),
         tabLinks = document.querySelectorAll(tabLinksSelector);
         
 
     function showTabs(i = 0) {
-        tabContent[i].style.display = 'block';
+        tabContent[i].style.display = display;
         tabLinks[i].classList.add(activeClass);
     }
 

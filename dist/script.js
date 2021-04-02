@@ -22688,6 +22688,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])();
 });
 
@@ -22815,10 +22816,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var modals = function modals() {
+  var timerId;
+  console.log(timerId);
+
   function bindModal(modalSelector, triggerSelector, closeSelector) {
     var triggers = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
-        closeBtns = document.querySelectorAll(closeSelector); //open on trigger
+        closeBtns = document.querySelectorAll(closeSelector); // let timerId = setTimeout(() => {
+    //     modal.style.display = 'block';
+    //     document.body.style.overflow = 'hidden';
+    // })
+    //open on trigger
 
     triggers.forEach(function (trigger) {
       trigger.addEventListener('click', function (e) {
@@ -22828,6 +22836,9 @@ var modals = function modals() {
 
         modal.style.display = "block";
         document.body.style.overflow = 'hidden';
+        console.log(timerId); //clear timeout modal if user opened it already
+
+        clearInterval(timerId);
       });
     }); //close on X
 
@@ -22849,14 +22860,16 @@ var modals = function modals() {
 
   function showModalByTime(modalSelector, time) {
     var modal = document.querySelector(modalSelector);
-    var timerId = setTimeout(function () {
+    timerId = setTimeout(function () {
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
     }, time);
+    console.log(timerId);
   }
 
   bindModal('.popup_engineer', '.popup_engineer_btn', '.popup_close');
   bindModal('.popup', '.phone_link', '.popup_close');
+  bindModal('.popup_calc', '.popup_calc_btn', '.popup_calc_close');
   showModalByTime('.popup', 60000);
 };
 
@@ -22881,13 +22894,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var tabs = function tabs(tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, activeClass) {
+  var display = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'block';
   var tabContent = document.querySelectorAll(tabContentSelector),
       tabLinksWrapper = document.querySelector(tabLinksWrapperSelector),
       tabLinks = document.querySelectorAll(tabLinksSelector);
 
   function showTabs() {
     var i = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    tabContent[i].style.display = 'block';
+    tabContent[i].style.display = display;
     tabLinks[i].classList.add(activeClass);
   }
 
