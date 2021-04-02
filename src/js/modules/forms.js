@@ -1,15 +1,11 @@
 import IMask from 'imask';
 
-const forms = () => {
+const forms = (state) => {
     const form = document.querySelectorAll('form'),
         phoneInputs = document.querySelectorAll('input[name="user_phone"]');
 
-    //check for numbers
-    phoneInputs.forEach(item => {
-        // item.addEventListener('input' , () => {
-        //     // item.value = item.value.replace(/\D/, '');
-
-        // }) 
+    //mask for phone
+    phoneInputs.forEach(item => {  
         item = IMask(
             item, {
                 mask: '+{7}(000)000-00-00'
@@ -52,7 +48,11 @@ const forms = () => {
             item.append(statusBlock);
 
             const formData = new FormData(item);
-
+            if (item.getAttribute('data-calc') === "end") {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
             postData('assets/server.php', formData)
                 .then(result => {
                     console.log(result);

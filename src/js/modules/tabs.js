@@ -3,12 +3,12 @@ const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, act
         tabLinksWrapper = document.querySelector(tabLinksWrapperSelector),
         tabLinks = document.querySelectorAll(tabLinksSelector);
         
-
+    //helper to show needed tab , default show first tab
     function showTabs(i = 0) {
         tabContent[i].style.display = display;
         tabLinks[i].classList.add(activeClass);
     }
-
+    //helper to hidetabs
     function hideTabs() {
         tabContent.forEach(tab => {
             tab.style.display = 'none';
@@ -20,6 +20,7 @@ const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, act
     hideTabs();
     showTabs();
 
+    
     tabLinksWrapper.addEventListener('click', (e) => {
         e.preventDefault();
         const target = e.target;
