@@ -2,9 +2,7 @@ const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, act
     const tabContent = document.querySelectorAll(tabContentSelector),
         tabLinksWrapper = document.querySelector(tabLinksWrapperSelector),
         tabLinks = document.querySelectorAll(tabLinksSelector);
-        console.log(tabLinksWrapper);
-        console.log(tabLinks);
-        console.log(tabContent)
+        
 
     function showTabs(i = 0) {
         tabContent[i].style.display = 'block';
@@ -32,8 +30,7 @@ const tabs = (tabContentSelector, tabLinksWrapperSelector, tabLinksSelector, act
             tabLinks.forEach((item, i) => {
                 //проверяем на в какой таб кликнули(или в его родителя)
                 if (target === item || target.parentNode === item) {
-                    console.log(target)
-                    console.log(target.parentNode)
+                  
                     hideTabs();
                     showTabs(i);
                 }
