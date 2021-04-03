@@ -1,6 +1,6 @@
 const timer = (deadline) => {
 
-
+    //get time difference and return object with proper values
     function getTimeLeft(endtime) {
         const timeLeft = Date.parse(endtime) - Date.parse(new Date()); //get time diff
 
@@ -17,7 +17,12 @@ const timer = (deadline) => {
             seconds
         }
     }
+    //helper to add zeros to numbers
+    function addZeros(num) {
+      return  (num < 10 && num >= 0) ? num = '0' + num : num;
+    }
 
+    //initialize clock, get elems from page, then get time diff and put values into respective elements textcontent, call update func every second with setInterval
     function setUpClock() {
         const days = document.querySelector('#days'),
               hours = document.querySelector('#hours'),
@@ -30,10 +35,10 @@ const timer = (deadline) => {
         function updateClock() {
             const t = getTimeLeft(deadline);
 
-            days.textContent = t.days;
-            hours.textContent = t.hours;
-            minutes.textContent = t.minutes;
-            seconds.textContent = t.seconds;
+            days.textContent = addZeros(t.days);
+            hours.textContent = addZeros(t.hours) ;
+            minutes.textContent = addZeros(t.minutes);
+            seconds.textContent = addZeros(t.seconds);
         }
 
         const timerId = setInterval(() => {
