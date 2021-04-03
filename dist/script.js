@@ -22682,6 +22682,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/setDefaultSelect */ "./src/js/modules/setDefaultSelect.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+
 
 
 
@@ -22697,6 +22699,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]', '[data-calc] input', '#view_type');
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])('2021-04-25');
 });
 
 /***/ }),
@@ -23160,6 +23163,61 @@ var tabs = function tabs(tabContentSelector, tabLinksWrapperSelector, tabLinksSe
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var timer = function timer(deadline) {
+  function getTimeLeft(endtime) {
+    var timeLeft = Date.parse(endtime) - Date.parse(new Date()); //get time diff
+
+    var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
+        hours = Math.floor(timeLeft / 1000 * 60 * 60 % 24),
+        //get hours with floor of 24 hours (нам нужен именно хвост, поэтому от полученных общих часов берем остаток от деления на 24 часа
+    // т.е если было 150 часов ,то после деление 150 % 24, останется хвост в 6 часов, а дни отбросятся
+    minutes = Math.floor(timeLeft / 1000 / 60 % 60),
+        seconds = Math.floor(timeLeft / 1000 % 60);
+    return {
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds
+    };
+  }
+
+  function setUpClock() {
+    var days = document.querySelector('#days'),
+        hours = document.querySelector('#hours'),
+        minutes = document.querySelector('#minutes'),
+        seconds = document.querySelector('#seconds'); //call function 1 time to initialize clock so it will show proper values
+
+    updateClock();
+
+    function updateClock() {
+      var t = getTimeLeft(deadline);
+      days.textContent = t.days;
+      hours.textContent = t.hours;
+      minutes.textContent = t.minutes;
+      seconds.textContent = t.seconds;
+    }
+
+    var timerId = setInterval(function () {
+      updateClock();
+    }, 1000);
+  }
+
+  setUpClock();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ }),
 
