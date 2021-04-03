@@ -32,6 +32,13 @@ const forms = (state, allModalsSelector) => {
 
     }
 
+    //helper to clear obj(we can do just this state ={}, but we taking it in our hands :)) 
+    const clearObject = (obj) => {
+        for (let key in obj) {
+            delete obj[key];
+        }
+    } 
+
     //bind event listeners to forms
     form.forEach(item => {
         item.addEventListener('submit', (e) => {
@@ -72,6 +79,8 @@ const forms = (state, allModalsSelector) => {
                     setTimeout(() => {
                         closePopups(allModalsSelector);
                     },4000)
+                    //clear state
+                    clearObject(state);
                 })
         })
     })

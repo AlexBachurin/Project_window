@@ -22870,6 +22870,13 @@ var forms = function forms(state, allModalsSelector) {
         }
       }
     });
+  }; //helper to clear obj(we can do just this state ={}, but we taking it in our hands :)) 
+
+
+  var clearObject = function clearObject(obj) {
+    for (var key in obj) {
+      delete obj[key];
+    }
   }; //bind event listeners to forms
 
 
@@ -22908,7 +22915,9 @@ var forms = function forms(state, allModalsSelector) {
 
         setTimeout(function () {
           Object(_modals__WEBPACK_IMPORTED_MODULE_6__["closePopups"])(allModalsSelector);
-        }, 4000);
+        }, 4000); //clear state
+
+        clearObject(state);
       });
     });
   });
