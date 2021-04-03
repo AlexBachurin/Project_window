@@ -10,7 +10,7 @@ function closePopups(popupsSelector) {
 
 const modals = (state, allModalsSelector) => {
     let timerId;
-
+    let message = document.createElement('div');
     let errMessage = 'Пожалуйста введите все данные';
     //helper function to bind different modals 
     function bindModal(modalSelector, triggerSelector, closeSelector, shouldClose = true) {
@@ -29,11 +29,11 @@ const modals = (state, allModalsSelector) => {
                 //check if we have needed values in our state when we working with calc popups
                 //for first calc popup
                 if (e.target.getAttribute('data-calcnext') === "toProfile") {
-                    let message = document.createElement('div');
                     if (!state.width || !state.height) {
                         //check if we have already status message in html, so we wont dublicate error messages
-                        if (calcContent.contains(document.querySelector('.err-message'))) {
+                        if (calcContent.contains(message)) {
                             //do nothing
+                            console.log('containts')
                         } else {
                             message.textContent = errMessage;
                             message.classList.add('status', 'err-message');
@@ -41,19 +41,19 @@ const modals = (state, allModalsSelector) => {
                         }
 
                     } else {
+                        message.remove();
                         closePopups(allModalsSelector);
                         modal.style.display = "block";
-                        document.body.style.overflow = 'hidden';
-                        message.remove();
+                        document.body.style.overflow = 'hidden'; 
                         //clear timeout modal if user opened it already
                         clearInterval(timerId);
                     }
                     //for second calc popup
                 } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
-                    let message = document.createElement('div');
                     if (!state.type || !state.profile) {
                         if (calcProfile.contains(document.querySelector('.err-message'))) {
                             //do nothing
+                            console.log('containts')
                         } else {
                             message.textContent = errMessage;
                             message.classList.add('status', 'err-message');

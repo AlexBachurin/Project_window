@@ -32,7 +32,7 @@ const forms = (state, allModalsSelector) => {
 
     }
 
-    //helper to clear obj(we can do just this state ={}, but we taking it in our hands :)) 
+    //helper to clear state(we can do just this state ={}, but we taking it in our hands :)) 
     const clearObject = (obj) => {
         for (let key in obj) {
             delete obj[key];
