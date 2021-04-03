@@ -1,6 +1,7 @@
 import IMask from 'imask';
+import {closePopups} from './modals';
 
-const forms = (state) => {
+const forms = (state, allModalsSelector) => {
     const form = document.querySelectorAll('form'),
         phoneInputs = document.querySelectorAll('input[name="user_phone"]');
 
@@ -67,6 +68,10 @@ const forms = (state) => {
                     setTimeout(() => {
                         statusBlock.remove();
                     }, 3000)
+                    //close all modals after form post
+                    setTimeout(() => {
+                        closePopups(allModalsSelector);
+                    },4000)
                 })
         })
     })

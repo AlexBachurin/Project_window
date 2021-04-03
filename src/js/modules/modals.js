@@ -1,11 +1,20 @@
-const modals = (state) => {
+//helper to close all popups
+function closePopups(popupsSelector) {
+    const popups = document.querySelectorAll(popupsSelector);
+    popups.forEach(popup => {
+        popup.style.display = 'none';
+        document.body.style.overflow = '';
+    })
+} 
+
+
+const modals = (state, allModalsSelector) => {
     let timerId;
     //helper function to bind different modals 
     function bindModal(modalSelector, triggerSelector, closeSelector, shouldClose = true) {
         const triggers = document.querySelectorAll(triggerSelector),
             modal = document.querySelector(modalSelector),
-            closeBtns = document.querySelectorAll(closeSelector),
-            windows = document.querySelectorAll('[data-modal]');
+            closeBtns = document.querySelectorAll(closeSelector);
 
         //open on trigger
         triggers.forEach(trigger => {
@@ -13,15 +22,42 @@ const modals = (state) => {
                 if (e.target) {
                     e.preventDefault();
                 }
-                //close all popups if theres a few of them
-                windows.forEach(item => {
-                    item.style.display = 'none';
-                });
-        
+                // if (e.target.getAttribute('data-calcnext') === "toProfile") {
+                //     if (!state.width || !state.height) {
+                //         const form = document.querySelector('.popup_calc_content');
+                //         let message = document.createElement('div');
+                //         message.textContent = 'ошибка';
+                //         form.append(message);
+                //     } else {
+                //         modal.style.display = "block";
+                //         document.body.style.overflow = 'hidden';
+                //         //clear timeout modal if user opened it already
+                //         clearInterval(timerId);
+                //     }
+                // } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
+                //     if (!state.type || !state.profile) {
+                //         const form = document.querySelector('.popup_calc_content');
+                //         let message = document.createElement('div');
+                //         message.textContent = 'ошибка';
+                //         form.append(message);
+                //     } else {
+                //         modal.style.display = "block";
+                //         document.body.style.overflow = 'hidden';
+                //         //clear timeout modal if user opened it already
+                //         clearInterval(timerId);
+                //     }
+                // }
+                // else {
+                     // close all popups if theres a few of them
+                    closePopups(allModalsSelector);
+
                     modal.style.display = "block";
-                document.body.style.overflow = 'hidden';
-                //clear timeout modal if user opened it already
-                clearInterval(timerId);
+                    document.body.style.overflow = 'hidden';
+                    //clear timeout modal if user opened it already
+                    clearInterval(timerId);
+                   
+                // }
+                
                 
                 
             })
@@ -34,9 +70,7 @@ const modals = (state) => {
                 document.body.style.overflow = '';
 
                 //close all popups if theres a few of them
-                windows.forEach(item => {
-                    item.style.display = 'none';
-                });
+                closePopups(allModalsSelector);
 
             })
         })
@@ -47,9 +81,7 @@ const modals = (state) => {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
                 //close all popups if theres a few of them
-                windows.forEach(item => {
-                    item.style.display = 'none';
-                });
+                closePopups(allModalsSelector);
             }
         })
 
@@ -78,3 +110,4 @@ const modals = (state) => {
 }
 
 export default modals;
+export {closePopups};

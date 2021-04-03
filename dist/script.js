@@ -22689,11 +22689,11 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', function () {
   var modalState = {};
   Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
-  Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState, '[data-modal]');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]');
 });
 
 /***/ }),
@@ -22718,13 +22718,15 @@ var changeModalState = function changeModalState(state) {
       windowWidth = document.querySelectorAll('#width'),
       windowHeight = document.querySelectorAll('#height'),
       windowType = document.querySelectorAll('#view_type'),
-      windowProfile = document.querySelectorAll('.checkbox');
+      windowProfile = document.querySelectorAll('.checkbox'); //helper to make inputs only in numbers
+
   Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_1__["default"])('#width');
-  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_1__["default"])('#height');
+  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_1__["default"])('#height'); //bind events to different elements
 
   function bindActionToElems(event, elem, prop) {
     elem.forEach(function (item, i) {
       item.addEventListener(event, function () {
+        //check nodename of element and put info in state object
         switch (item.nodeName) {
           case 'SPAN':
             state[prop] = i;
@@ -22732,7 +22734,8 @@ var changeModalState = function changeModalState(state) {
 
           case 'INPUT':
             if (item.getAttribute('type') === 'checkbox') {
-              i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm';
+              i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm'; //make sure we can select only one checkbox
+
               elem.forEach(function (box, j) {
                 box.checked = false;
 
@@ -22817,6 +22820,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var imask__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! imask */ "./node_modules/imask/esm/index.js");
+/* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modals */ "./src/js/modules/modals.js");
 
 
 
@@ -22824,7 +22828,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var forms = function forms(state) {
+
+var forms = function forms(state, allModalsSelector) {
   var form = document.querySelectorAll('form'),
       phoneInputs = document.querySelectorAll('input[name="user_phone"]'); //mask for phone
 
@@ -22899,7 +22904,11 @@ var forms = function forms(state) {
         item.reset();
         setTimeout(function () {
           statusBlock.remove();
-        }, 3000);
+        }, 3000); //close all modals after form post
+
+        setTimeout(function () {
+          Object(_modals__WEBPACK_IMPORTED_MODULE_6__["closePopups"])(allModalsSelector);
+        }, 4000);
       });
     });
   });
@@ -22913,39 +22922,72 @@ var forms = function forms(state) {
 /*!**********************************!*\
   !*** ./src/js/modules/modals.js ***!
   \**********************************/
-/*! exports provided: default */
+/*! exports provided: default, closePopups */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closePopups", function() { return closePopups; });
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var modals = function modals(state) {
+//helper to close all popups
+function closePopups(popupsSelector) {
+  var popups = document.querySelectorAll(popupsSelector);
+  popups.forEach(function (popup) {
+    popup.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+}
+
+var modals = function modals(state, allModalsSelector) {
   var timerId; //helper function to bind different modals 
 
   function bindModal(modalSelector, triggerSelector, closeSelector) {
     var shouldClose = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     var triggers = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
-        closeBtns = document.querySelectorAll(closeSelector),
-        windows = document.querySelectorAll('[data-modal]'); //open on trigger
+        closeBtns = document.querySelectorAll(closeSelector); //open on trigger
 
     triggers.forEach(function (trigger) {
       trigger.addEventListener('click', function (e) {
         if (e.target) {
           e.preventDefault();
-        } //close all popups if theres a few of them
+        } // if (e.target.getAttribute('data-calcnext') === "toProfile") {
+        //     if (!state.width || !state.height) {
+        //         const form = document.querySelector('.popup_calc_content');
+        //         let message = document.createElement('div');
+        //         message.textContent = 'ошибка';
+        //         form.append(message);
+        //     } else {
+        //         modal.style.display = "block";
+        //         document.body.style.overflow = 'hidden';
+        //         //clear timeout modal if user opened it already
+        //         clearInterval(timerId);
+        //     }
+        // } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
+        //     if (!state.type || !state.profile) {
+        //         const form = document.querySelector('.popup_calc_content');
+        //         let message = document.createElement('div');
+        //         message.textContent = 'ошибка';
+        //         form.append(message);
+        //     } else {
+        //         modal.style.display = "block";
+        //         document.body.style.overflow = 'hidden';
+        //         //clear timeout modal if user opened it already
+        //         clearInterval(timerId);
+        //     }
+        // }
+        // else {
+        // close all popups if theres a few of them
 
 
-        windows.forEach(function (item) {
-          item.style.display = 'none';
-        });
+        closePopups(allModalsSelector);
         modal.style.display = "block";
         document.body.style.overflow = 'hidden'; //clear timeout modal if user opened it already
 
-        clearInterval(timerId);
+        clearInterval(timerId); // }
       });
     }); //close on X
 
@@ -22955,9 +22997,7 @@ var modals = function modals(state) {
         modal.style.display = 'none';
         document.body.style.overflow = ''; //close all popups if theres a few of them
 
-        windows.forEach(function (item) {
-          item.style.display = 'none';
-        });
+        closePopups(allModalsSelector);
       });
     }); //close on outside click
 
@@ -22966,9 +23006,7 @@ var modals = function modals(state) {
         modal.style.display = 'none';
         document.body.style.overflow = ''; //close all popups if theres a few of them
 
-        windows.forEach(function (item) {
-          item.style.display = 'none';
-        });
+        closePopups(allModalsSelector);
       }
     });
   } //show modal after some time
@@ -22991,6 +23029,7 @@ var modals = function modals(state) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
 
 /***/ }),
 

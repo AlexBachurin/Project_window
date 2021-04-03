@@ -7,13 +7,15 @@ const changeModalState = (state) => {
         windowHeight = document.querySelectorAll('#height'),
         windowType = document.querySelectorAll('#view_type'),
         windowProfile = document.querySelectorAll('.checkbox');
-
+    //helper to make inputs only in numbers
     checkNumInputs('#width');
     checkNumInputs('#height');
 
+    //bind events to different elements
     function bindActionToElems(event, elem, prop) {
         elem.forEach((item, i) => {
             item.addEventListener(event, () => {
+                //check nodename of element and put info in state object
                 switch(item.nodeName) {
                     case 'SPAN' :
                         state[prop] = i;
@@ -21,6 +23,7 @@ const changeModalState = (state) => {
                     case 'INPUT' :
                         if (item.getAttribute('type') === 'checkbox') {
                             i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm';
+                            //make sure we can select only one checkbox
                             elem.forEach((box, j) => {
                                 box.checked = false;
                                 if (i === j) {

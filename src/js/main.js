@@ -9,9 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
         
     };
     changeModalState(modalState);
-    modals();
+    modals(modalState, '[data-modal]');
     tabs('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
     tabs('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
     tabs('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block')
-    forms(modalState);
+    forms(modalState, '[data-modal]');
 })
