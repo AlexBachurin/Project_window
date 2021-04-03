@@ -22681,6 +22681,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
+/* harmony import */ var _modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/setDefaultSelect */ "./src/js/modules/setDefaultSelect.js");
+
 
 
 
@@ -22688,6 +22690,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.addEventListener('DOMContentLoaded', function () {
   var modalState = {};
+  Object(_modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__["default"])();
   Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState, '[data-modal]');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
@@ -23079,6 +23082,24 @@ var modals = function modals(state, allModalsSelector) {
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
 
+
+/***/ }),
+
+/***/ "./src/js/modules/setDefaultSelect.js":
+/*!********************************************!*\
+  !*** ./src/js/modules/setDefaultSelect.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var setDefaultSelect = function setDefaultSelect() {
+  var selectElement = document.querySelector('#view_type');
+  selectElement.selectedIndex = -1;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (setDefaultSelect);
 
 /***/ }),
 

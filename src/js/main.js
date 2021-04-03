@@ -3,11 +3,13 @@ import modals from './modules/modals';
 import tabs from './modules/tabs';
 import forms from './modules/forms';
 import changeModalState from './modules/changeModalState';
+import setDefaultSelect from './modules/setDefaultSelect';
 
 window.addEventListener('DOMContentLoaded', () => {
     const modalState = {
         
     };
+    setDefaultSelect();
     changeModalState(modalState);
     modals(modalState, '[data-modal]');
     tabs('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
