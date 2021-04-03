@@ -22951,52 +22951,75 @@ function closePopups(popupsSelector) {
 }
 
 var modals = function modals(state, allModalsSelector) {
-  var timerId; //helper function to bind different modals 
+  var timerId;
+  var errMessage = 'Пожалуйста введите все данные'; //helper function to bind different modals 
 
   function bindModal(modalSelector, triggerSelector, closeSelector) {
     var shouldClose = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     var triggers = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
-        closeBtns = document.querySelectorAll(closeSelector); //open on trigger
+        closeBtns = document.querySelectorAll(closeSelector),
+        calcContent = document.querySelector('.popup_calc_content'),
+        calcProfile = document.querySelector('.popup_calc_profile_content'); //open on trigger
 
     triggers.forEach(function (trigger) {
       trigger.addEventListener('click', function (e) {
         if (e.target) {
           e.preventDefault();
-        } // if (e.target.getAttribute('data-calcnext') === "toProfile") {
-        //     if (!state.width || !state.height) {
-        //         const form = document.querySelector('.popup_calc_content');
-        //         let message = document.createElement('div');
-        //         message.textContent = 'ошибка';
-        //         form.append(message);
-        //     } else {
-        //         modal.style.display = "block";
-        //         document.body.style.overflow = 'hidden';
-        //         //clear timeout modal if user opened it already
-        //         clearInterval(timerId);
-        //     }
-        // } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
-        //     if (!state.type || !state.profile) {
-        //         const form = document.querySelector('.popup_calc_content');
-        //         let message = document.createElement('div');
-        //         message.textContent = 'ошибка';
-        //         form.append(message);
-        //     } else {
-        //         modal.style.display = "block";
-        //         document.body.style.overflow = 'hidden';
-        //         //clear timeout modal if user opened it already
-        //         clearInterval(timerId);
-        //     }
-        // }
-        // else {
-        // close all popups if theres a few of them
+        } //check if we have needed values in our state when we working with calc popups
+        //for first calc popup
 
 
-        closePopups(allModalsSelector);
-        modal.style.display = "block";
-        document.body.style.overflow = 'hidden'; //clear timeout modal if user opened it already
+        if (e.target.getAttribute('data-calcnext') === "toProfile") {
+          var message = document.createElement('div');
 
-        clearInterval(timerId); // }
+          if (!state.width || !state.height) {
+            //check if we have already status message in html, so we wont dublicate error messages
+            if (calcContent.contains(document.querySelector('.err-message'))) {//do nothing
+            } else {
+              message.textContent = errMessage;
+              message.classList.add('status', 'err-message');
+              calcContent.append(message);
+            }
+          } else {
+            closePopups(allModalsSelector);
+            modal.style.display = "block";
+            document.body.style.overflow = 'hidden';
+            message.remove(); //clear timeout modal if user opened it already
+
+            clearInterval(timerId);
+          } //for second calc popup
+
+        } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
+          var _message = document.createElement('div');
+
+          if (!state.type || !state.profile) {
+            if (calcProfile.contains(document.querySelector('.err-message'))) {//do nothing
+            } else {
+              _message.textContent = errMessage;
+
+              _message.classList.add('status', 'err-message');
+
+              calcProfile.append(_message);
+            }
+          } else {
+            closePopups(allModalsSelector);
+            modal.style.display = "block";
+            document.body.style.overflow = 'hidden';
+
+            _message.remove(); //clear timeout modal if user opened it already
+
+
+            clearInterval(timerId);
+          }
+        } else {
+          // close all popups if theres a few of them
+          closePopups(allModalsSelector);
+          modal.style.display = "block";
+          document.body.style.overflow = 'hidden'; //clear timeout modal if user opened it already
+
+          clearInterval(timerId);
+        }
       });
     }); //close on X
 
