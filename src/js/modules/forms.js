@@ -1,9 +1,13 @@
 import IMask from 'imask';
 import {closePopups} from './modals';
 
-const forms = (state, allModalsSelector) => {
+const forms = (state, allModalsSelector, calcInputsSelector, selectSelector) => {
     const form = document.querySelectorAll('form'),
-        phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+        phoneInputs = document.querySelectorAll('input[name="user_phone"]'),
+        calcInputs = document.querySelectorAll(calcInputsSelector),
+        select =  document.querySelector(selectSelector);
+    
+    console.log(select)
 
     //mask for phone
     phoneInputs.forEach(item => {  
@@ -13,7 +17,22 @@ const forms = (state, allModalsSelector) => {
             });
 
 
-    })
+    });
+
+    //helper to clear calc inputs after form post
+    const clearInputs = () => {
+        calcInputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                input.checked = false;
+            }
+            input.value = '';
+        })
+    }
+
+    //helper to reset select to default
+    const resetSelect = () => {
+        select.selectedIndex = -1;
+    }
 
     const message = {
         success: 'Успешно отправлено',
@@ -81,6 +100,10 @@ const forms = (state, allModalsSelector) => {
                     },4000)
                     //clear state
                     clearObject(state);
+                    //clear calc Inputs
+                    clearInputs();
+                    //reset select
+                    resetSelect();
                 })
         })
     })

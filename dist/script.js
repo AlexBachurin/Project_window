@@ -22693,7 +22693,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]');
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]', '[data-calc] input', '#view_type');
 });
 
 /***/ }),
@@ -22829,15 +22829,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var forms = function forms(state, allModalsSelector) {
+var forms = function forms(state, allModalsSelector, calcInputsSelector, selectSelector) {
   var form = document.querySelectorAll('form'),
-      phoneInputs = document.querySelectorAll('input[name="user_phone"]'); //mask for phone
+      phoneInputs = document.querySelectorAll('input[name="user_phone"]'),
+      calcInputs = document.querySelectorAll(calcInputsSelector),
+      select = document.querySelector(selectSelector);
+  console.log(select); //mask for phone
 
   phoneInputs.forEach(function (item) {
     item = Object(imask__WEBPACK_IMPORTED_MODULE_5__["default"])(item, {
       mask: '+{7}(000)000-00-00'
     });
-  });
+  }); //helper to clear calc inputs after form post
+
+  var clearInputs = function clearInputs() {
+    calcInputs.forEach(function (input) {
+      if (input.type === 'checkbox') {
+        input.checked = false;
+      }
+
+      input.value = '';
+    });
+  }; //helper to reset select to default
+
+
+  var resetSelect = function resetSelect() {
+    select.selectedIndex = -1;
+  };
+
   var message = {
     success: 'Успешно отправлено',
     loading: 'Загрузка...',
@@ -22917,7 +22936,11 @@ var forms = function forms(state, allModalsSelector) {
           Object(_modals__WEBPACK_IMPORTED_MODULE_6__["closePopups"])(allModalsSelector);
         }, 4000); //clear state
 
-        clearObject(state);
+        clearObject(state); //clear calc Inputs
+
+        clearInputs(); //reset select
+
+        resetSelect();
       });
     });
   });
@@ -22952,7 +22975,8 @@ function closePopups(popupsSelector) {
 
 var modals = function modals(state, allModalsSelector) {
   var timerId;
-  var message = document.createElement('div');
+  var message = document.createElement('div'); //block for displaying error message if we dont type values
+
   var errMessage = 'Пожалуйста введите все данные'; //helper function to bind different modals 
 
   function bindModal(modalSelector, triggerSelector, closeSelector) {
@@ -22974,9 +22998,7 @@ var modals = function modals(state, allModalsSelector) {
         if (e.target.getAttribute('data-calcnext') === "toProfile") {
           if (!state.width || !state.height) {
             //check if we have already status message in html, so we wont dublicate error messages
-            if (calcContent.contains(message)) {
-              //do nothing
-              console.log('containts');
+            if (calcContent.contains(message)) {//do nothing
             } else {
               message.textContent = errMessage;
               message.classList.add('status', 'err-message');
@@ -22993,9 +23015,7 @@ var modals = function modals(state, allModalsSelector) {
 
         } else if (e.target.getAttribute('data-calcnext') === 'toResult') {
           if (!state.type || !state.profile) {
-            if (calcProfile.contains(document.querySelector('.err-message'))) {
-              //do nothing
-              console.log('containts');
+            if (calcProfile.contains(document.querySelector('.err-message'))) {//do nothing
             } else {
               message.textContent = errMessage;
               message.classList.add('status', 'err-message');

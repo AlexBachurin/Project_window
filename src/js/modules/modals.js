@@ -10,7 +10,7 @@ function closePopups(popupsSelector) {
 
 const modals = (state, allModalsSelector) => {
     let timerId;
-    let message = document.createElement('div');
+    let message = document.createElement('div'); //block for displaying error message if we dont type values
     let errMessage = 'Пожалуйста введите все данные';
     //helper function to bind different modals 
     function bindModal(modalSelector, triggerSelector, closeSelector, shouldClose = true) {
@@ -33,7 +33,6 @@ const modals = (state, allModalsSelector) => {
                         //check if we have already status message in html, so we wont dublicate error messages
                         if (calcContent.contains(message)) {
                             //do nothing
-                            console.log('containts')
                         } else {
                             message.textContent = errMessage;
                             message.classList.add('status', 'err-message');
@@ -53,7 +52,6 @@ const modals = (state, allModalsSelector) => {
                     if (!state.type || !state.profile) {
                         if (calcProfile.contains(document.querySelector('.err-message'))) {
                             //do nothing
-                            console.log('containts')
                         } else {
                             message.textContent = errMessage;
                             message.classList.add('status', 'err-message');
