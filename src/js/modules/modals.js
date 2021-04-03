@@ -12,6 +12,17 @@ const modals = (state, allModalsSelector) => {
     let timerId;
     let message = document.createElement('div'); //block for displaying error message if we dont type values
     let errMessage = 'Пожалуйста введите все данные';
+
+    //helpers to open and close modals
+    function showModal(modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
     //helper function to bind different modals 
     function bindModal(modalSelector, triggerSelector, closeSelector, shouldClose = true) {
         const triggers = document.querySelectorAll(triggerSelector),
@@ -42,8 +53,7 @@ const modals = (state, allModalsSelector) => {
                     } else {
                         message.remove();
                         closePopups(allModalsSelector);
-                        modal.style.display = "block";
-                        document.body.style.overflow = 'hidden'; 
+                        showModal(modal);
                         //clear timeout modal if user opened it already
                         clearInterval(timerId);
                     }
@@ -61,8 +71,7 @@ const modals = (state, allModalsSelector) => {
 
                     } else {
                         closePopups(allModalsSelector);
-                        modal.style.display = "block";
-                        document.body.style.overflow = 'hidden';
+                        showModal(modal);
                         message.remove();
                         //clear timeout modal if user opened it already
                         clearInterval(timerId);
@@ -71,8 +80,7 @@ const modals = (state, allModalsSelector) => {
                     // close all popups if theres a few of them
                     closePopups(allModalsSelector);
 
-                    modal.style.display = "block";
-                    document.body.style.overflow = 'hidden';
+                    showModal(modal);
                     //clear timeout modal if user opened it already
                     clearInterval(timerId);
 
@@ -86,8 +94,7 @@ const modals = (state, allModalsSelector) => {
         closeBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
+                closeModal(modal);
 
                 //close all popups if theres a few of them
                 closePopups(allModalsSelector);
@@ -98,8 +105,7 @@ const modals = (state, allModalsSelector) => {
         //close on outside click
         modal.addEventListener('click', (e) => {
             if (e.target === modal && shouldClose) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
+                closeModal(modal);
                 //close all popups if theres a few of them
                 closePopups(allModalsSelector);
             }
@@ -114,8 +120,7 @@ const modals = (state, allModalsSelector) => {
         const modal = document.querySelector(modalSelector);
 
         timerId = setTimeout(() => {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            showModal(modal);
         }, time);
     }
 

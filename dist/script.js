@@ -22690,7 +22690,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.addEventListener('DOMContentLoaded', function () {
   var modalState = {};
-  Object(_modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  Object(_modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__["default"])('#view_type');
   Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState, '[data-modal]');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
@@ -22824,6 +22824,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var imask__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! imask */ "./node_modules/imask/esm/index.js");
 /* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _setDefaultSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./setDefaultSelect */ "./src/js/modules/setDefaultSelect.js");
+
 
 
 
@@ -22835,9 +22837,7 @@ __webpack_require__.r(__webpack_exports__);
 var forms = function forms(state, allModalsSelector, calcInputsSelector, selectSelector) {
   var form = document.querySelectorAll('form'),
       phoneInputs = document.querySelectorAll('input[name="user_phone"]'),
-      calcInputs = document.querySelectorAll(calcInputsSelector),
-      select = document.querySelector(selectSelector);
-  console.log(select); //mask for phone
+      calcInputs = document.querySelectorAll(calcInputsSelector); //mask for phone
 
   phoneInputs.forEach(function (item) {
     item = Object(imask__WEBPACK_IMPORTED_MODULE_5__["default"])(item, {
@@ -22853,11 +22853,6 @@ var forms = function forms(state, allModalsSelector, calcInputsSelector, selectS
 
       input.value = '';
     });
-  }; //helper to reset select to default
-
-
-  var resetSelect = function resetSelect() {
-    select.selectedIndex = -1;
   };
 
   var message = {
@@ -22943,7 +22938,7 @@ var forms = function forms(state, allModalsSelector, calcInputsSelector, selectS
 
         clearInputs(); //reset select
 
-        resetSelect();
+        Object(_setDefaultSelect__WEBPACK_IMPORTED_MODULE_7__["default"])(selectSelector);
       });
     });
   });
@@ -22980,7 +22975,18 @@ var modals = function modals(state, allModalsSelector) {
   var timerId;
   var message = document.createElement('div'); //block for displaying error message if we dont type values
 
-  var errMessage = 'Пожалуйста введите все данные'; //helper function to bind different modals 
+  var errMessage = 'Пожалуйста введите все данные'; //helpers to open and close modals
+
+  function showModal(modal) {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  } //helper function to bind different modals 
+
 
   function bindModal(modalSelector, triggerSelector, closeSelector) {
     var shouldClose = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
@@ -23010,8 +23016,7 @@ var modals = function modals(state, allModalsSelector) {
           } else {
             message.remove();
             closePopups(allModalsSelector);
-            modal.style.display = "block";
-            document.body.style.overflow = 'hidden'; //clear timeout modal if user opened it already
+            showModal(modal); //clear timeout modal if user opened it already
 
             clearInterval(timerId);
           } //for second calc popup
@@ -23026,8 +23031,7 @@ var modals = function modals(state, allModalsSelector) {
             }
           } else {
             closePopups(allModalsSelector);
-            modal.style.display = "block";
-            document.body.style.overflow = 'hidden';
+            showModal(modal);
             message.remove(); //clear timeout modal if user opened it already
 
             clearInterval(timerId);
@@ -23035,8 +23039,7 @@ var modals = function modals(state, allModalsSelector) {
         } else {
           // close all popups if theres a few of them
           closePopups(allModalsSelector);
-          modal.style.display = "block";
-          document.body.style.overflow = 'hidden'; //clear timeout modal if user opened it already
+          showModal(modal); //clear timeout modal if user opened it already
 
           clearInterval(timerId);
         }
@@ -23046,8 +23049,7 @@ var modals = function modals(state, allModalsSelector) {
     closeBtns.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        modal.style.display = 'none';
-        document.body.style.overflow = ''; //close all popups if theres a few of them
+        closeModal(modal); //close all popups if theres a few of them
 
         closePopups(allModalsSelector);
       });
@@ -23055,8 +23057,7 @@ var modals = function modals(state, allModalsSelector) {
 
     modal.addEventListener('click', function (e) {
       if (e.target === modal && shouldClose) {
-        modal.style.display = 'none';
-        document.body.style.overflow = ''; //close all popups if theres a few of them
+        closeModal(modal); //close all popups if theres a few of them
 
         closePopups(allModalsSelector);
       }
@@ -23067,8 +23068,7 @@ var modals = function modals(state, allModalsSelector) {
   function showModalByTime(modalSelector, time) {
     var modal = document.querySelector(modalSelector);
     timerId = setTimeout(function () {
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
+      showModal(modal);
     }, time);
   }
 
@@ -23094,8 +23094,8 @@ var modals = function modals(state, allModalsSelector) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var setDefaultSelect = function setDefaultSelect() {
-  var selectElement = document.querySelector('#view_type');
+var setDefaultSelect = function setDefaultSelect(selectSelector) {
+  var selectElement = document.querySelector(selectSelector);
   selectElement.selectedIndex = -1;
 };
 

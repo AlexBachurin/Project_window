@@ -1,13 +1,11 @@
 import IMask from 'imask';
 import {closePopups} from './modals';
+import setDefaultSelect from './setDefaultSelect';
 
 const forms = (state, allModalsSelector, calcInputsSelector, selectSelector) => {
     const form = document.querySelectorAll('form'),
         phoneInputs = document.querySelectorAll('input[name="user_phone"]'),
-        calcInputs = document.querySelectorAll(calcInputsSelector),
-        select =  document.querySelector(selectSelector);
-    
-    console.log(select)
+        calcInputs = document.querySelectorAll(calcInputsSelector);
 
     //mask for phone
     phoneInputs.forEach(item => {  
@@ -29,10 +27,6 @@ const forms = (state, allModalsSelector, calcInputsSelector, selectSelector) => 
         })
     }
 
-    //helper to reset select to default
-    const resetSelect = () => {
-        select.selectedIndex = -1;
-    }
 
     const message = {
         success: 'Успешно отправлено',
@@ -103,7 +97,7 @@ const forms = (state, allModalsSelector, calcInputsSelector, selectSelector) => 
                     //clear calc Inputs
                     clearInputs();
                     //reset select
-                    resetSelect();
+                    setDefaultSelect(selectSelector);
                 })
         })
     })

@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const modalState = {
         
     };
-    setDefaultSelect();
+    setDefaultSelect('#view_type');
     changeModalState(modalState);
     modals(modalState, '[data-modal]');
     tabs('.glazing_content', '.glazing_slider', '.glazing_block', 'active');
