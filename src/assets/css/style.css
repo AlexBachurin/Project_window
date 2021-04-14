@@ -1817,4 +1817,10 @@ textarea:focus {
     -webkit-animation: none !important;
     animation: none !important;
   }
+
+  .popup img {
+    width: 320px;
+    height: auto;
+    object-fit: cover;
+  }
 }

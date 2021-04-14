@@ -5,6 +5,8 @@ import forms from './modules/forms';
 import changeModalState from './modules/changeModalState';
 import setDefaultSelect from './modules/setDefaultSelect';
 import timer from './modules/timer';
+import images from './modules/images';
+
 
 window.addEventListener('DOMContentLoaded', () => {
     const modalState = {
@@ -18,4 +20,5 @@ window.addEventListener('DOMContentLoaded', () => {
     tabs('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block')
     forms(modalState, '[data-modal]', '[data-calc] input', '#view_type');
     timer('2021-04-25');
+    images();
 })

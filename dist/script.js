@@ -22683,6 +22683,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_setDefaultSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/setDefaultSelect */ "./src/js/modules/setDefaultSelect.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
+
 
 
 
@@ -22700,6 +22702,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]', '[data-calc] input', '#view_type');
   Object(_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])('2021-04-25');
+  Object(_modules_images__WEBPACK_IMPORTED_MODULE_7__["default"])();
 });
 
 /***/ }),
@@ -22948,6 +22951,48 @@ var forms = function forms(state, allModalsSelector, calcInputsSelector, selectS
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (forms);
+
+/***/ }),
+
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var images = function images() {
+  //create modal popup with our Big Img
+  var imgPopup = document.createElement('div'),
+      imgSection = document.querySelector('.works'),
+      bigImage = document.createElement('img'); //put right class for modal
+  //and add it to html
+
+  imgPopup.classList.add('popup');
+  imgSection.append(imgPopup); //put img into modal
+
+  imgPopup.style.cssText = 'display: none; justify-content: center; align-items: center';
+  imgPopup.append(bigImage);
+  imgSection.addEventListener('click', function (e) {
+    e.preventDefault();
+    var target = e.target; //show img
+
+    if (target && target.classList.contains('preview')) {
+      imgPopup.style.display = 'flex';
+      var path = target.parentNode.getAttribute('href');
+      bigImage.setAttribute('src', path);
+    } //close on outside click or on image click
+
+
+    if (target && target.matches('div.popup') || target.matches('div.popup img')) {
+      imgPopup.style.display = 'none';
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (images);
 
 /***/ }),
 
