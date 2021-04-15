@@ -11,6 +11,7 @@ const timer = (deadline) => {
             seconds = Math.floor((timeLeft / 1000) % 60)
 
         return {
+            total: timeLeft,
             days,
             hours,
             minutes,
@@ -19,27 +20,37 @@ const timer = (deadline) => {
     }
     //helper to add zeros to numbers
     function addZeros(num) {
-      return  (num < 10 && num >= 0) ? num = '0' + num : num;
+        return (num < 10 && num >= 0) ? num = '0' + num : num;
     }
 
     //initialize clock, get elems from page, then get time diff and put values into respective elements textcontent, call update func every second with setInterval
     function setUpClock() {
         const days = document.querySelector('#days'),
-              hours = document.querySelector('#hours'),
-              minutes = document.querySelector('#minutes'),
-              seconds = document.querySelector('#seconds');
-        
+            hours = document.querySelector('#hours'),
+            minutes = document.querySelector('#minutes'),
+            seconds = document.querySelector('#seconds');
+
         //call function 1 time to initialize clock so it will show proper values
         updateClock();
 
         function updateClock() {
             const t = getTimeLeft(deadline);
-
-            days.textContent = addZeros(t.days);
-            hours.textContent = addZeros(t.hours) ;
-            minutes.textContent = addZeros(t.minutes);
-            seconds.textContent = addZeros(t.seconds);
+            //if zero time left, set all to 0 and reset update
+            if (t.total <= 0) {
+                days.textContent = '00';
+                hours.textContent = '00';
+                minutes.textContent = '00';
+                seconds.textContent = '00';
+                clearInterval(timerId);
+            } else {
+                days.textContent = addZeros(t.days);
+                hours.textContent = addZeros(t.hours);
+                minutes.textContent = addZeros(t.minutes);
+                seconds.textContent = addZeros(t.seconds);
+            }
+           
         }
+
 
         const timerId = setInterval(() => {
             updateClock();

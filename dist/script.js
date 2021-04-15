@@ -22701,7 +22701,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_content > div > div', '.decoration_slider', '.no_click', 'after_click');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.big_img > img', '.balcon_icons', '.balcon_icons_img', 'do_image_more', 'inline-block');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '[data-modal]', '[data-calc] input', '#view_type');
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])('2021-04-25');
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])('2021-04-15');
   Object(_modules_images__WEBPACK_IMPORTED_MODULE_7__["default"])();
 });
 
@@ -23232,6 +23232,7 @@ var timer = function timer(deadline) {
     minutes = Math.floor(timeLeft / 1000 / 60 % 60),
         seconds = Math.floor(timeLeft / 1000 % 60);
     return {
+      total: timeLeft,
       days: days,
       hours: hours,
       minutes: minutes,
@@ -23254,11 +23255,20 @@ var timer = function timer(deadline) {
     updateClock();
 
     function updateClock() {
-      var t = getTimeLeft(deadline);
-      days.textContent = addZeros(t.days);
-      hours.textContent = addZeros(t.hours);
-      minutes.textContent = addZeros(t.minutes);
-      seconds.textContent = addZeros(t.seconds);
+      var t = getTimeLeft(deadline); //if zero time left, set all to 0 and reset update
+
+      if (t.total <= 0) {
+        days.textContent = '00';
+        hours.textContent = '00';
+        minutes.textContent = '00';
+        seconds.textContent = '00';
+        clearInterval(timerId);
+      } else {
+        days.textContent = addZeros(t.days);
+        hours.textContent = addZeros(t.hours);
+        minutes.textContent = addZeros(t.minutes);
+        seconds.textContent = addZeros(t.seconds);
+      }
     }
 
     var timerId = setInterval(function () {
