@@ -11,17 +11,23 @@ function closePopups(popupsSelector) {
 const modals = (state, allModalsSelector) => {
     let timerId;
     let message = document.createElement('div'); //block for displaying error message if we dont type values
-    let errMessage = 'Пожалуйста введите все данные';
+    let errMessage = 'Пожалуйста введите все данные',
+        //get scroll width
+        scroll = calcScroll();
 
     //helpers to open and close modals
     function showModal(modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
+        //prevent window hopping on modal open
+        document.body.style.marginRight = `${scroll}px`;
     }
 
     function closeModal(modal) {
         modal.style.display = 'none';
         document.body.style.overflow = '';
+        document.body.style.marginRight = `0px`;
+
     }
     //helper function to bind different modals 
     function bindModal(modalSelector, triggerSelector, closeSelector, shouldClose = true) {
@@ -30,6 +36,7 @@ const modals = (state, allModalsSelector) => {
             closeBtns = document.querySelectorAll(closeSelector),
             calcContent = document.querySelector('.popup_calc_content'),
             calcProfile = document.querySelector('.popup_calc_profile_content');
+            
 
         //open on trigger
         triggers.forEach(trigger => {
@@ -122,6 +129,25 @@ const modals = (state, allModalsSelector) => {
         timerId = setTimeout(() => {
             showModal(modal);
         }, time);
+    }
+
+    //calculate scroll width
+    function calcScroll() {
+        let div = document.createElement('div');
+
+        div.style.width = '50px';
+        div.style.height = '50px';
+        div.style.overflowY = 'scroll';
+        div.style.visibility = 'hidden';
+        document.body.append(div);
+        //Calculate scroll width
+        //offsetWidth(full width with borders etc) - clientWidth(only padding plus content and no scroll)
+        //with this we get scroll width
+        let scrollWidth = div.offsetWidth - div.clientWidth;
+        //delete after we get scrollWidth
+        div.remove();
+        console.log(scrollWidth)
+        return scrollWidth;
     }
 
 
